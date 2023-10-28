@@ -27,6 +27,7 @@
 *.out
 *.app
 *.run
+dns
 
 # Debug files
 *.dSYM/
