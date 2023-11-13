@@ -11,7 +11,9 @@
 #define DNSQUERIES_HPP
 
 #include <algorithm>
-
+#include <sstream>
+#include <iomanip>
+#include <vector>
 #include "DnsHeader.hpp"
 
 class DnsQueries {
@@ -27,7 +29,9 @@ public:
     // TODO - remove
     void printStringAsHex(string str);
 
-    string reverseAddress(string address);
+    string reverseAddress(string address, bool isIpv6);
+
+    string expandIpv6Address(string address);
 
     string getDnsAddressFormat(string address);
 
