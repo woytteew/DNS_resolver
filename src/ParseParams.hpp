@@ -12,12 +12,13 @@
 
 #include <iostream>
 #include <getopt.h>
+#include <netdb.h>
+#include <arpa/inet.h>
 
 using namespace std;
 
 class DnsParams {
 public:
-
     // Method for parsing arguments
     void parseParams(int argc, char *argv[]);
 
@@ -31,7 +32,7 @@ public:
 
     bool getIpv6() const { return ipv6; }
 
-    string getServer() const { return server; }
+    string getServerIP();
 
     int getPort() const { return port; }
 

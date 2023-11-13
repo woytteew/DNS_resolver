@@ -29,7 +29,7 @@ void DnsParams::parseParams(int argc, char *argv[]) {
                 port = atoi(optarg);
                 break;
             default:
-                cerr << "Usage: dns [-r] [-x] [-6] -s server [-p port] adress" << endl;
+                this->help();
                 exit(EXIT_FAILURE);
         }
     }
@@ -38,9 +38,28 @@ void DnsParams::parseParams(int argc, char *argv[]) {
     if (optind < argc) {
         address = argv[optind];
     } else {
-        cerr << "Usage: dns [-r] [-x] [-6] -s server [-p port] adress" << endl;
+        this->help();
         exit(EXIT_FAILURE);
     }
+}
+
+string DnsParams::getServerIP(){
+    struct hostent *he;
+    struct in_addr **addr_list;
+    string ip;
+
+    if ((he = gethostbyname(server.c_str())) == NULL) {
+        cerr << "Error: gethostbyname failed" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    addr_list = (struct in_addr **)he->h_addr_list;
+
+    for (int i = 0; addr_list[i] != NULL; i++) {
+        ip = inet_ntoa(*addr_list[i]);
+    }
+
+    return ip;
 }
 
 void DnsParams::help() {
