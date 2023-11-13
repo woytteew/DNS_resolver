@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "DnsHeader.hpp"
+#include "DnsQueries.hpp"
 
 int main(int argc, char *argv[]) {
     DnsParams params;
@@ -47,25 +47,15 @@ int main(int argc, char *argv[]) {
     // Create query
     string query = header.getQuery();
 
+    DnsQueries queries(params);
+
+    query += queries.getQuery();
+
+
     // query length in bites
     int query_len = query.length() * 8;
     printf("Query length: %d\n", query_len);
 
-    printf("Id: \n");
-    int i;
-    // print id in bites
-    for (i = 0; i < 16; i++) {
-        printf("%d", (query[i / 8] >> (7 - (i % 8))) & 1);
-    }
-
-
-    printf("\nFlags: \n");
-    // print query in bites
-    for (i = 16; i < query_len; i++) {
-        printf("%d", (query[i / 8] >> (7 - (i % 8))) & 1);
-    }
-
-    printf("\n");
     // Send query to server
     if (sendto(sock, query.c_str(), query.length(), 0, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
         cerr << "Error: sendto failed" << endl;
