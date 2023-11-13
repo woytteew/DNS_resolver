@@ -62,7 +62,6 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    /*
     // Receive response from server
     char buffer[1024];
     int len;
@@ -74,7 +73,7 @@ int main(int argc, char *argv[]) {
     // Print response
     cout << "Response:" << endl;
     cout << buffer << endl;
-    */
+    
 
     close(sock);
 

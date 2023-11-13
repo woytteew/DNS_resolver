@@ -2,12 +2,12 @@
  * ISA Project - DNS resolver
  * 
  * @file parseParams.cpp
- * @brief Source file for ParseParams class
+ * @brief Source file for DnsParams class
  * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline) 
 */
 
-#include "ParseParams.hpp"
+#include "DnsParams.hpp"
 
 void DnsParams::parseParams(int argc, char *argv[]) {
     int option;

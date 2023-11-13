@@ -2,15 +2,15 @@
  * ISA Project - DNS resolver
  *
  * @file DnsHeader.hpp
- * @author Vojtech Czakan (xczaka00)
  * @brief Header file for DnsHeader class
+ * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline)
 */
 
 #ifndef DNSHEADER_HPP
 #define DNSHEADER_HPP
 
-#include "ParseParams.hpp"
+#include "DnsParams.hpp"
 
 class DnsHeader {
 public:

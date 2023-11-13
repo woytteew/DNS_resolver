@@ -2,13 +2,13 @@
  * ISA Project - DNS resolver
  *
  * @file parseParams.hpp
+ * @brief Header file for DnsParams class
  * @author Vojtech Czakan (xczaka00)
- * @brief Header file for ParseParams class
  * @date 20. 11. 2023 (deadline)
 */
 
-#ifndef PARSEPARAMS_HPP
-#define PARSEPARAMS_HPP
+#ifndef DNSPARAMS_HPP
+#define DNSPARAMS_HPP
 
 #include <iostream>
 #include <getopt.h>
@@ -48,4 +48,4 @@ private:
     string address;
 };
 
-#endif // PARSEPARAMS_HPP
+#endif // DNSPARAMS_HPP

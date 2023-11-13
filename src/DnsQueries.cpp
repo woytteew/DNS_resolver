@@ -2,8 +2,8 @@
  * ISA Project - DNS resolver
  * 
  * @file DnsQueries.hpp
- * @author Vojtech Czakan (xczaka00)
  * @brief Source file for DnsQueries class
+ * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline)
 */
 
@@ -24,7 +24,6 @@ void DnsQueries::SetQueries(DnsParams params){
     } else {
         // Set qname
         this->qname  = getDnsAddressFormat(params.getAddress());
-        printStringAsHex(this->qname);
     }
 
     // Set qtype

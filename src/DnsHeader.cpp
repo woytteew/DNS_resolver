@@ -2,8 +2,8 @@
  * ISA Project - DNS resolver
  *
  * @file DnsHeader.cpp
- * @author Vojtech Czakan (xczaka00)
  * @brief Source file for DnsHeader class
+ * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline)
  * 
 */

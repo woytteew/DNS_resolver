@@ -2,8 +2,8 @@
  * ISA Project - DNS resolver
  * 
  * @file DnsQueries.hpp
- * @author Vojtech Czakan (xczaka00)
  * @brief Header file for DnsQueries class
+ * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline)
 */
 
