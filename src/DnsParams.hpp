@@ -22,6 +22,8 @@ public:
     // Method for parsing arguments
     void parseParams(int argc, char *argv[]);
 
+    bool checkIPv4(string address);   
+
     // Print help
     void help();
 

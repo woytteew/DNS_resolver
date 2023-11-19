@@ -10,16 +10,17 @@
 #include "DnsQueries.hpp"
 
 void DnsQueries::SetQueries(DnsParams params){
+    bool isIpv6 = params.getAddress().find(':') != string::npos;
     // Set qname
     if (params.getReverse()) {
         string address = params.getAddress();
 
-        if (params.getIpv6()) {
+        if (isIpv6) {
             // Expanded IPv6 address
             address = expandIpv6Address(address);
         }
 
-        this->qname = getDnsAddressFormat(reverseAddress(address,params.getIpv6()));
+        this->qname = getDnsAddressFormat(reverseAddress(address,isIpv6));
 
     } else {
         // Set qname

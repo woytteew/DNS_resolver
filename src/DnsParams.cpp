@@ -41,6 +41,30 @@ void DnsParams::parseParams(int argc, char *argv[]) {
         this->help();
         exit(EXIT_FAILURE);
     }
+
+    // Check if -6 and -x are not set together
+    if (ipv6 && reverse) {
+        cerr << "Error: -6 and -x cannot be set together" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    // Check if -x is set, address is IPv4 or IPv6
+    if (reverse) {
+        bool invalid = false;
+        
+        if(address.find(':') == string::npos && address.find('.') == string::npos) {
+            invalid = true;  
+        }
+        else if (address.find('.') != string::npos) {
+            // IPv4 has 4 parts and only digits
+            invalid = !checkIPv4(address);
+        }
+
+        if (invalid) {
+            cerr << "Error: address is not IPv4 or IPv6" << endl;
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 string DnsParams::getServerIP(){
@@ -60,6 +84,24 @@ string DnsParams::getServerIP(){
     }
 
     return ip;
+}
+
+bool DnsParams::checkIPv4(string address){
+    // IPv4 has 4 parts and only digits
+    int parts = 1;
+    for (long unsigned int i = 0; i < address.length(); i++) {
+        if (address[i] == '.') {
+            parts++;
+        } else if (!isdigit(address[i])) {
+            return false;
+            break;
+        }
+    }
+    if (parts != 4) {
+        return false;
+    }
+
+    return true;
 }
 
 void DnsParams::help() {
