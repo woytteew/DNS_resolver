@@ -29,9 +29,9 @@ void DnsResponse::parseDnsResponse(unsigned char *buffer, int *len){
 
     // Authority section
     parseAnswer(tempBuffer, &tempLen, buffer, "authority");
-/*
+
     // Additional section
-    parseAnswer(tempBuffer, &tempLen, buffer, "additional");*/
+    parseAnswer(tempBuffer, &tempLen, buffer, "additional");
 
 }
 
@@ -183,6 +183,9 @@ string DnsResponse::getNameFromDnsFormat(unsigned char *buffer){
 
             // Get name from offset
             dnsName += getNameFromDnsFormat(buffer + offset);
+
+            cout << "dnsName: " << dnsName << endl;
+
             break;
         }
 

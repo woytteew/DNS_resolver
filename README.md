@@ -12,4 +12,11 @@ TODO
 `./dns[-r] [-x] [-6] -s server [-p port] address`
 
 ### Submitted files
-TODO
+dns.cpp
+DnsAnswer.(cpp/hpp)
+DnsHeader.(cpp/hpp)
+DnsParams.(cpp/hpp)
+DnsQueries.(cpp/hpp)
+DnsResponse.(cpp/hpp)
+Makefile
+README.md
