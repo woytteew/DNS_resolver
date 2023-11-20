@@ -10,4 +10,28 @@
 #ifndef DNSANSWER_HPP
 #define DNSANSWER_HPP
 
+#include <cstring>
+#include "DnsQueries.hpp"
+
+class DnsAnswer{
+public:
+    // Constructor
+    DnsAnswer(unsigned char *buffer, int *len){
+        parseDnsAnswer(buffer, len);
+    }
+
+    void parseDnsAnswer(unsigned char *buffer, int *len);
+
+    void parseFlags(unsigned char *flags,int *len);
+
+    void parseQuery(unsigned char *query, int *len);
+
+    void printBufferAsHex(unsigned char *buffer, int len);
+
+        
+private:
+    DnsHeader header;
+
+};
+
 #endif //DNSANSWER_HPP

@@ -15,6 +15,8 @@
 class DnsHeader {
 public:
     // Constructor
+    DnsHeader();
+
     DnsHeader(DnsParams params){
         SetHeader(params);
     }
@@ -24,6 +26,32 @@ public:
 
     // Getters
     string getQuery();
+
+    unsigned short getId() const { return id; }
+
+    unsigned short getFlags() const { return (qr << 15) | (opcode << 11) | (aa << 10) | (tc << 9) | (rd << 8) | (ra << 7) | (z << 6) | (ad << 5) | (aans << 4) | (rcode << 0);}
+
+    unsigned short getQdcount() const { return qdcount; }
+
+    unsigned short getAncount() const { return ancount; }
+
+    unsigned short getNscount() const { return nscount; }
+
+    unsigned short getArcount() const { return arcount; }
+
+    // Setters
+
+    void setId(unsigned short id) { DnsHeader::id = id; }
+
+    void setFlags(unsigned short flags);
+
+    void setQdcount(unsigned short qdcount) { DnsHeader::qdcount = qdcount; }
+
+    void setAncount(unsigned short ancount) { DnsHeader::ancount = ancount; }
+
+    void setNscount(unsigned short nscount) { DnsHeader::nscount = nscount; }
+
+    void setArcount(unsigned short arcount) { DnsHeader::arcount = arcount; }
 
 private:
     unsigned short id;

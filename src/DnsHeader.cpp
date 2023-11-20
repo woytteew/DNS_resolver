@@ -10,6 +10,25 @@
 
 #include "DnsHeader.hpp"
 
+DnsHeader::DnsHeader(){
+    this->id = 0;
+    this->qr = 0;
+    this->opcode = 0;
+    this->aa = 0;
+    this->tc = 0;
+    this->rd = 0;
+    this->ra = 0;
+    this->z = 0;
+    this->ad = 0;
+    this->aans = 0;
+    this->rcode = 0;
+
+    this->qdcount = 0;
+    this->ancount = 0;
+    this->nscount = 0;
+    this->arcount = 0;
+}
+
 void DnsHeader::SetHeader(DnsParams params){
     this->id = 0x1234;
 
@@ -23,6 +42,20 @@ void DnsHeader::SetHeader(DnsParams params){
     this->ancount = 0;
     this->nscount = 0;
     this->arcount = 0;
+}
+
+void DnsHeader::setFlags(unsigned short flags){
+    this->qr = (flags >> 15) & 0x01;
+    this->opcode = (flags >> 11) & 0x0F;
+    this->aa = (flags >> 10) & 0x01;
+    this->tc = (flags >> 9) & 0x01;
+    this->rd = (flags >> 8) & 0x01;
+
+    this->ra = (flags >> 7) & 0x01;
+    this->z = (flags >> 6) & 0x01;
+    this->ad = (flags >> 5) & 0x01;
+    this->aans = (flags >> 4) & 0x01;
+    this->rcode = (flags >> 0) & 0x0F;
 }
 
 string DnsHeader::getQuery(){

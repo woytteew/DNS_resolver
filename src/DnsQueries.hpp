@@ -19,6 +19,12 @@
 class DnsQueries {
 public:
     // Constructor
+    DnsQueries(){
+        this->qname = "";
+        this->qtype = 0;
+        this->qclass = 0;
+    }
+
     DnsQueries(DnsParams params){
         SetQueries(params);
     }
@@ -35,8 +41,21 @@ public:
 
     string getDnsAddressFormat(string address);
 
+    // Setters
+    void setQname(string qname) { DnsQueries::qname = qname; }
+
+    void setQtype(unsigned short qtype) { DnsQueries::qtype = qtype; }
+
+    void setQclass(unsigned short qclass) { DnsQueries::qclass = qclass; }
+
     // Getters
     string getQuery();
+
+    string getQname() const { return qname; }
+
+    unsigned short getQtype() const { return qtype; }
+
+    unsigned short getQclass() const { return qclass; }
 
 private:
     string qname;
