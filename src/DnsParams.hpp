@@ -36,6 +36,8 @@ public:
 
     string getServerIP();
 
+    string getServer() const { return server; }
+
     int getPort() const { return port; }
 
     string getAddress() const { return address; }

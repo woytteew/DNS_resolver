@@ -16,9 +16,7 @@
 class DnsAnswer{
 public:
     // Constructor
-    DnsAnswer(unsigned char *buffer, int *len){
-        parseDnsAnswer(buffer, len);
-    }
+    DnsAnswer(unsigned char *buffer, int *len){ parseDnsAnswer(buffer, len); }
 
     void parseDnsAnswer(unsigned char *buffer, int *len);
 
@@ -26,11 +24,16 @@ public:
 
     void parseQuery(unsigned char *query, int *len);
 
+    string getNameFromDnsFormat(unsigned char *buffer);
+
+    void printAnswer();
+
     void printBufferAsHex(unsigned char *buffer, int len);
 
         
 private:
     DnsHeader header;
+    DnsQueries queries;
 
 };
 

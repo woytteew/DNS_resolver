@@ -1,7 +1,7 @@
 /**
  * ISA Project - DNS resolver
  * 
- * @file main.cpp
+ * @file dns.cpp
  * @brief Main file for DNS resolver program
  * @author Vojtech Czakan (xczaka00)
  * @date 20. 11. 2023 (deadline)
@@ -15,6 +15,7 @@
 int main(int argc, char *argv[]) {
     DnsParams params;
 
+    // Parse arguments
     params.parseParams(argc, argv);
 
     DnsHeader header(params);
@@ -40,9 +41,7 @@ int main(int argc, char *argv[]) {
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(params.getPort());
     server_addr.sin_addr.s_addr = inet_addr(params.getServerIP().c_str());
-
-
-    printf("Server: %s\n", params.getServerIP().c_str());
+    
 
     // Create query
     string query = header.getQuery();
@@ -65,15 +64,10 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    cout << endl;
     // Parse response
     DnsAnswer answer(buffer, &len);
 
-    /*
-    // Print response
-    cout << "Response:" << endl;
-    cout << buffer << endl;*/
-    
+    answer.printAnswer();
 
     close(sock);
 

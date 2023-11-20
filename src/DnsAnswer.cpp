@@ -12,7 +12,6 @@
 void DnsAnswer::parseDnsAnswer(unsigned char *buffer, int *len){
     // Header section
     parseFlags(buffer, len);
-    
     // Query section
     parseQuery(buffer, len);
 
@@ -22,51 +21,80 @@ void DnsAnswer::parseDnsAnswer(unsigned char *buffer, int *len){
 }
 
 void DnsAnswer::parseFlags(unsigned char *flags, int *len){
-    DnsHeader header;
-
-    // Parse ID (2 bytes) and remove from flags
-    header.setId((flags[0] << 8) | flags[1]);
+    // Parse ID (2 bytes)
+    this->header.setId((flags[0] << 8) | flags[1]);
 
     // Parse flags (2 bytes)
-    header.setFlags((flags[2] << 8) | flags[3]);
+    this->header.setFlags((flags[2] << 8) | flags[3]);
     
     // Parse qdcount (2 bytes)
-    header.setQdcount((flags[4] << 8) | flags[5]);
+    this->header.setQdcount((flags[4] << 8) | flags[5]);
 
     // Parse ancount (2 bytes)
-    header.setAncount((flags[6] << 8) | flags[7]);
+    this->header.setAncount((flags[6] << 8) | flags[7]);
 
     // Parse nscount (2 bytes)
-    header.setNscount((flags[8] << 8) | flags[9]);
+    this->header.setNscount((flags[8] << 8) | flags[9]);
 
     // Parse arcount (2 bytes)
-    header.setArcount((flags[10] << 8) | flags[11]);
+    this->header.setArcount((flags[10] << 8) | flags[11]);
 
-    // Remove header from buffer
-    flags += 12;
+    // Remove header from buffer (12 bytes)
+    memmove(flags, flags + 12, *len - 12);
     *len -= 12;
-    
-    cout << "Authoritative: " << ((header.getFlags() & 0x0400) ? "Yes" : "No") << ", ";
-    cout << "Recursive: " << ((header.getFlags() & 0x0100) ? "Yes" : "No") << ", ";
-    cout << "Truncated: " << ((header.getFlags() & 0x0200) ? "Yes" : "No") << endl;
-    
-    
 
 }
 
 void DnsAnswer::parseQuery(unsigned char *query, int *len){
-    // Question section
-    DnsQueries queries;
+    // Set qname
+    string qname = getNameFromDnsFormat(query);
+    this->queries.setQname(qname);
 
-    // Parse qname dynamically
-    /*
-    // queries.setQname(answer.substr(12, 2));
-    queries.setQtype((query[2] << 8) | query[3]);
-    queries.setQclass((query[4] << 8) | query[5]);
+    // Remove qname from buffer
+    memmove(query, query + qname.length() + 2, *len - qname.length() - 2);
+    *len -= qname.length() + 2;
 
-    cout << "Qname: " << queries.getQname() << ", ";
-    cout << "Qtype: " << queries.getQtype() << ", ";
-    cout << "Qclass: " << queries.getQclass() << endl;*/
+    // Set qtype
+    this->queries.setQtype((query[0] << 8) | query[1]);
+
+    // Set qclass
+    this->queries.setQclass((query[2] << 8) | query[3]);
+
+    // Remove query from buffer
+    memmove(query, query + 4, *len - 4);
+    *len -= 4;
+
+}
+
+string DnsAnswer::getNameFromDnsFormat(unsigned char *buffer){
+    unsigned char* qnamePtr = buffer;
+
+    string dnsName;
+    while (*qnamePtr != 0) {
+
+        // Firs byte represents the length of next part of name
+        int length = static_cast<int>(*qnamePtr);
+        qnamePtr++;
+
+        if (!dnsName.empty()) {
+            dnsName += ".";
+        }
+
+        dnsName += string(reinterpret_cast<const char*>(qnamePtr), length);
+        qnamePtr += length;
+    }
+
+    return dnsName;
+}
+
+void DnsAnswer::printAnswer(){
+    cout << "Authoritative: " << ((this->header.getFlags() & 0x0400) ? "Yes" : "No") << ", ";
+    cout << "Recursive: " << ((this->header.getFlags() & 0x0100) ? "Yes" : "No") << ", ";
+    cout << "Truncated: " << ((this->header.getFlags() & 0x0200) ? "Yes" : "No") << endl;
+
+    cout << "Question section (" << this->header.getQdcount() << ")" << endl;
+    cout << " " << this->queries.getQname() << ", " << this->queries.getQtype() << ", " << this->queries.getQclass() << endl;
+
 }
 
 void DnsAnswer::printBufferAsHex(unsigned char *buffer, int len){

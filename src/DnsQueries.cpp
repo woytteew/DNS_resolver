@@ -9,6 +9,12 @@
 
 #include "DnsQueries.hpp"
 
+DnsQueries::DnsQueries(){
+        this->qname = "";
+        this->qtype = 0;
+        this->qclass = 0;
+}
+
 void DnsQueries::SetQueries(DnsParams params){
     bool isIpv6 = params.getAddress().find(':') != string::npos;
     // Set qname
@@ -16,14 +22,12 @@ void DnsQueries::SetQueries(DnsParams params){
         string address = params.getAddress();
 
         if (isIpv6) {
-            // Expanded IPv6 address
             address = expandIpv6Address(address);
         }
 
         this->qname = getDnsAddressFormat(reverseAddress(address,isIpv6));
 
     } else {
-        // Set qname
         this->qname  = getDnsAddressFormat(params.getAddress());
     }
 
@@ -90,7 +94,6 @@ string DnsQueries::reverseAddress(string address, bool isIpv6){
     int lastDot = address.length() - 1;
 
     if(!isIpv6){
-        // Add each part of address
         for (int i = address.length() - 1; i >= 0; i--) {
             if (address[i] == '.') {
                 reversedAddress += address.substr(i + 1, lastDot - i);
@@ -99,7 +102,6 @@ string DnsQueries::reverseAddress(string address, bool isIpv6){
             }
         }
 
-        // Add last part of address
         reversedAddress += address.substr(0, lastDot + 1);
     }
     else{
@@ -117,10 +119,8 @@ string DnsQueries::reverseAddress(string address, bool isIpv6){
             reversedAddress.pop_back();
         }
     }
-    
-    cerr << "Reversed address: " << reversedAddress << endl;
 
-    // Add in-addr.arpa
+    // Add last part of reversed address (.arpa)
     if(isIpv6) {
         reversedAddress += ".ip6";
     }
@@ -169,8 +169,53 @@ string DnsQueries::expandIpv6Address(string address){
     return result;
 }
 
-void DnsQueries::printStringAsHex(string str){
-    for (long unsigned int i = 0; i < str.length(); i++) {
-        printf("%02x ", (unsigned char)str[i]);
+string DnsQueries::getQtype(){
+    if(this->qtype == 1){
+        return "A";
+    }
+    else if(this->qtype == 28){
+        return "AAAA";
+    }
+    else if(this->qtype == 12){
+        return "PTR";
+    }
+    else if(this->qtype == 2){
+        return "NS";
+    }
+    else if(this->qtype == 5){
+        return "CNAME";
+    }
+    else if(this->qtype == 6){
+        return "SOA";
+    }
+    else if(this->qtype == 15){
+        return "MX";
+    }
+    else if(this->qtype == 16){
+        return "TXT";
+    }
+    else{
+        return "Unknown";
+    }
+}
+
+string DnsQueries::getQclass(){
+    if(this->qclass == 1){
+        return "IN";
+    }
+    else if(this->qclass == 2){
+        return "CS";
+    }
+    else if(this->qclass == 3){
+        return "CH";
+    }
+    else if(this->qclass == 4){
+        return "HS";
+    }
+    else if(this->qclass == 255){
+        return "ANY";
+    }
+    else{
+        return "Unknown";
     }
 }

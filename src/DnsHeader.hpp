@@ -17,29 +17,10 @@ public:
     // Constructor
     DnsHeader();
 
-    DnsHeader(DnsParams params){
-        SetHeader(params);
-    }
-
-    // Methods
-    void SetHeader(DnsParams params);
-
-    // Getters
-    string getQuery();
-
-    unsigned short getId() const { return id; }
-
-    unsigned short getFlags() const { return (qr << 15) | (opcode << 11) | (aa << 10) | (tc << 9) | (rd << 8) | (ra << 7) | (z << 6) | (ad << 5) | (aans << 4) | (rcode << 0);}
-
-    unsigned short getQdcount() const { return qdcount; }
-
-    unsigned short getAncount() const { return ancount; }
-
-    unsigned short getNscount() const { return nscount; }
-
-    unsigned short getArcount() const { return arcount; }
+    DnsHeader(DnsParams params){ SetHeader(params); }
 
     // Setters
+    void SetHeader(DnsParams params);
 
     void setId(unsigned short id) { DnsHeader::id = id; }
 
@@ -52,6 +33,21 @@ public:
     void setNscount(unsigned short nscount) { DnsHeader::nscount = nscount; }
 
     void setArcount(unsigned short arcount) { DnsHeader::arcount = arcount; }
+
+    // Getters
+    string getQuery();
+
+    unsigned short getId() const { return id; }
+
+    unsigned short getFlags() const { return (qr << 15) | (opcode << 11) | (aa << 10) | (tc << 9) | (rd << 8) | (ra << 7) | (z << 6) | (ad << 5) | (aans << 4) | (rcode << 0);}
+
+    int getQdcount() const { return qdcount; }
+
+    int getAncount() const { return ancount; }
+
+    int getNscount() const { return nscount; }
+
+    int getArcount() const { return arcount; }
 
 private:
     unsigned short id;

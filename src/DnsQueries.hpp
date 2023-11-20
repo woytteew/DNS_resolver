@@ -19,21 +19,12 @@
 class DnsQueries {
 public:
     // Constructor
-    DnsQueries(){
-        this->qname = "";
-        this->qtype = 0;
-        this->qclass = 0;
-    }
+    DnsQueries();
 
-    DnsQueries(DnsParams params){
-        SetQueries(params);
-    }
+    DnsQueries(DnsParams params){ SetQueries(params); }
 
     // Methods
     void SetQueries(DnsParams params);
-
-    // TODO - remove
-    void printStringAsHex(string str);
 
     string reverseAddress(string address, bool isIpv6);
 
@@ -53,9 +44,9 @@ public:
 
     string getQname() const { return qname; }
 
-    unsigned short getQtype() const { return qtype; }
+    string getQtype();
 
-    unsigned short getQclass() const { return qclass; }
+    string getQclass();
 
 private:
     string qname;
