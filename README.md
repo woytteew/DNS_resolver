@@ -15,12 +15,12 @@ The application has a limitation when processing responses with encoded DNS name
 `./dns[-r] [-x] [-6] -s server [-p port] address`
 
 ### Submitted files
-dns.cpp
-DnsAnswer.(cpp/hpp)
-DnsHeader.(cpp/hpp)
-DnsParams.(cpp/hpp)
-DnsQueries.(cpp/hpp)
-DnsResponse.(cpp/hpp)
-Makefile
-README.md
-manual.pdf
+> dns.cpp
+> DnsAnswer.(cpp/hpp)
+> DnsHeader.(cpp/hpp)
+> DnsParams.(cpp/hpp)
+> DnsQueries.(cpp/hpp)
+> DnsResponse.(cpp/hpp)
+> Makefile
+> README.md
+> manual.pdf
