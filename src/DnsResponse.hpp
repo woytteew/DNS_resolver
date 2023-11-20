@@ -24,7 +24,7 @@ public:
 
     void parseQuerySec(unsigned char *query, int *len);
 
-    void parseAnswer(unsigned char *answer, int *len, unsigned char *buffer);
+    void parseAnswer(unsigned char *answer, int *len, unsigned char *buffer, string section);
 
     string decodeDnsName(unsigned char *name, int *len, unsigned char* buffer);
 

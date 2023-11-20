@@ -16,17 +16,20 @@ void DnsResponse::parseDnsResponse(unsigned char *buffer, int *len){
     // Copy buffer to new buffer
     memcpy(tempBuffer, buffer, *len);
 
+
     // Header section
     parseFlagsSec(tempBuffer, &tempLen);
     // Query section
     parseQuerySec(tempBuffer, &tempLen);
 
     // Answer section
-    parseAnswer(tempBuffer, &tempLen, buffer);
+    parseAnswer(tempBuffer, &tempLen, buffer, "answer");
+
+    
 
     // Authority section
-    /*parseAnswer(tempBuffer, &tempLen, buffer, "authority");
-
+    parseAnswer(tempBuffer, &tempLen, buffer, "authority");
+/*
     // Additional section
     parseAnswer(tempBuffer, &tempLen, buffer, "additional");*/
 
@@ -78,9 +81,20 @@ void DnsResponse::parseQuerySec(unsigned char *query, int *len){
 
 }
 
-void DnsResponse::parseAnswer(unsigned char *answer, int *len, unsigned char *buffer){
+void DnsResponse::parseAnswer(unsigned char *answer, int *len, unsigned char *buffer, string section){
+    int count;
+    
+    if(section == "answer"){
+        count = this->header.getAncount();
+    }
+    else if(section == "authority"){
+        count = this->header.getNscount();
+    }
+    else if(section == "additional"){
+        count = this->header.getArcount();
+    }
     // Parse each answer
-    for (int i = 0; i < this->header.getAncount(); i++) {
+    for (int i = 0; i < count; i++) {
         // Parse name
         string name = decodeDnsName(answer, len, buffer);
         
@@ -139,7 +153,16 @@ void DnsResponse::parseAnswer(unsigned char *answer, int *len, unsigned char *bu
         }
 
         // Add answer to vector
-        this->answers.push_back(DnsAnswer(name, type, dnsClass, ttl, rdlength, rdata));
+        if(section == "answer"){
+            this->answers.push_back(DnsAnswer(name, type, dnsClass, ttl, rdlength, rdata));
+        }
+        else if(section == "authority"){
+            this->authorities.push_back(DnsAnswer(name, type, dnsClass, ttl, rdlength, rdata));
+        }
+        else if(section == "additional"){
+            this->additionals.push_back(DnsAnswer(name, type, dnsClass, ttl, rdlength, rdata));
+        }
+        
     }     
 
 }
@@ -154,12 +177,22 @@ string DnsResponse::getNameFromDnsFormat(unsigned char *buffer){
         int length = static_cast<int>(*qnamePtr);
         qnamePtr++;
 
+        if((length & 0xC0) == 0xC0){
+            // Get offset
+            unsigned short offset = (qnamePtr[0] & 0x3F) << 8 | qnamePtr[1];
+
+            // Get name from offset
+            dnsName += getNameFromDnsFormat(buffer + offset);
+            break;
+        }
+
         if (!dnsName.empty()) {
             dnsName += ".";
         }
 
         dnsName += string(reinterpret_cast<const char*>(qnamePtr), length);
         qnamePtr += length;
+        
     }
 
     dnsName += ".";
@@ -206,17 +239,17 @@ void DnsResponse::printResponse(){
     
     }
 
-    /*cout << "Authority section (" << this->header.getNscount() << ")" << endl;
+    cout << "Authority section (" << this->header.getNscount() << ")" << endl;
     for (int i = 0; i < this->header.getNscount(); i++) {
-        cout << " " << this->answers[i].getName() << ", " << this->answers[i].getType() << ", " << this->answers[i].getClass() << ", " << this->answers[i].getTtl() << ", " << this->answers[i].getRdata() << endl;
+        cout << " " << this->authorities[i].getName() << ", " << this->authorities[i].getType() << ", " << this->authorities[i].getClass() << ", " << this->authorities[i].getTtl() << ", " << this->authorities[i].getRdata() << endl;
     
     }
 
     cout << "Additional section (" << this->header.getArcount() << ")" << endl;
     for (int i = 0; i < this->header.getArcount(); i++) {
-        cout << " " << this->answers[i].getName() << ", " << this->answers[i].getType() << ", " << this->answers[i].getClass() << ", " << this->answers[i].getTtl() << ", " << this->answers[i].getRdata() << endl;
+        cout << " " << this->additionals[i].getName() << ", " << this->additionals[i].getType() << ", " << this->additionals[i].getClass() << ", " << this->additionals[i].getTtl() << ", " << this->additionals[i].getRdata() << endl;
     
-    }*/
+    }
 
 }
 
