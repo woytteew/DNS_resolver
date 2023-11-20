@@ -10,7 +10,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "DnsAnswer.hpp"
+#include "DnsResponse.hpp"
 
 int main(int argc, char *argv[]) {
     DnsParams params;
@@ -65,9 +65,9 @@ int main(int argc, char *argv[]) {
     }
 
     // Parse response
-    DnsAnswer answer(buffer, &len);
+    DnsResponse response(buffer, &len);
 
-    answer.printAnswer();
+    response.printResponse();
 
     close(sock);
 

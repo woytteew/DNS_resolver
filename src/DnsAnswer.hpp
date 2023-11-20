@@ -10,31 +10,53 @@
 #ifndef DNSANSWER_HPP
 #define DNSANSWER_HPP
 
-#include <cstring>
 #include "DnsQueries.hpp"
 
 class DnsAnswer{
 public:
     // Constructor
-    DnsAnswer(unsigned char *buffer, int *len){ parseDnsAnswer(buffer, len); }
+    DnsAnswer(string name, unsigned short type, unsigned short class_, unsigned int ttl, unsigned short rdlength, string rdata){
+        setAnswer(name, type, class_, ttl, rdlength, rdata);
+    }
 
-    void parseDnsAnswer(unsigned char *buffer, int *len);
+    // Setters
+    void setAnswer(string name, unsigned short type, unsigned short class_, unsigned int ttl, unsigned short rdlength, string rdata);
 
-    void parseFlags(unsigned char *flags,int *len);
+    void setName(string name) { DnsAnswer::name = name; }
 
-    void parseQuery(unsigned char *query, int *len);
+    void setType(unsigned short type) { DnsAnswer::type = type; }
 
-    string getNameFromDnsFormat(unsigned char *buffer);
+    void setClass(unsigned short class_) { DnsAnswer::class_ = class_; }
 
-    void printAnswer();
+    void setTtl(unsigned int ttl) { DnsAnswer::ttl = ttl; }
 
-    void printBufferAsHex(unsigned char *buffer, int len);
+    void setRdlength(unsigned short rdlength) { DnsAnswer::rdlength = rdlength; }
 
-        
+    void setRdata(string rdata) { DnsAnswer::rdata = rdata; }
+
+
+    // Getters
+    string getName() const { return name; }
+
+    string getType();
+
+    string getClass();
+
+    unsigned int getTtl() const { return ttl; }
+
+    unsigned short getRdlength() const { return rdlength; }
+
+    string getRdata() const { return rdata; }
+
+
 private:
-    DnsHeader header;
-    DnsQueries queries;
-
+    string name;
+    unsigned short type;
+    unsigned short class_;
+    unsigned int ttl;
+    unsigned short rdlength;
+    string rdata;
 };
+
 
 #endif //DNSANSWER_HPP

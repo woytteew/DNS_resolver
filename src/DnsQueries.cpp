@@ -170,52 +170,37 @@ string DnsQueries::expandIpv6Address(string address){
 }
 
 string DnsQueries::getQtype(){
-    if(this->qtype == 1){
-        return "A";
-    }
-    else if(this->qtype == 28){
-        return "AAAA";
-    }
-    else if(this->qtype == 12){
-        return "PTR";
-    }
-    else if(this->qtype == 2){
-        return "NS";
-    }
-    else if(this->qtype == 5){
-        return "CNAME";
-    }
-    else if(this->qtype == 6){
-        return "SOA";
-    }
-    else if(this->qtype == 15){
-        return "MX";
-    }
-    else if(this->qtype == 16){
-        return "TXT";
-    }
-    else{
-        return "Unknown";
+    switch (this->qtype) {
+        case 1:
+            return "A";
+        case 2:
+            return "NS";
+        case 5:
+            return "CNAME";
+        case 6:
+            return "SOA";
+        case 12:
+            return "PTR";
+        case 15:
+            return "MX";
+        case 28:
+            return "AAAA";
+        default:
+            return "Unknown";
     }
 }
 
 string DnsQueries::getQclass(){
-    if(this->qclass == 1){
-        return "IN";
-    }
-    else if(this->qclass == 2){
-        return "CS";
-    }
-    else if(this->qclass == 3){
-        return "CH";
-    }
-    else if(this->qclass == 4){
-        return "HS";
-    }
-    else if(this->qclass == 255){
-        return "ANY";
-    }
-    else{
-        return "Unknown";
+    switch (this->qclass){
+        case 1:
+            return "IN";
+        case 2:
+            return "CS";
+        case 3:
+            return "CH";
+        case 4:
+            return "HS";
+        default:
+            return "Unknown";
     }
 }
